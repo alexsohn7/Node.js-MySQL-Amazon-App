@@ -113,7 +113,7 @@ function queryAllProducts() {
             connection.end();
 
           } else {
-            console.log("Insufficient quantity!");
+            console.log("Insufficient quantity!!!");
           }
         });
 
