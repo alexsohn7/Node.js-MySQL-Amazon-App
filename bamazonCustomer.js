@@ -16,8 +16,6 @@ var connection = mysql.createConnection({
 connection.connect(function (err) {
   if (err) throw err;
 
-  console.log("connected as id " + connection.threadId);
-
   queryAllProducts();
 });
 
@@ -36,6 +34,8 @@ function queryAllProducts() {
         res[i].item_id +
         " | " +
         res[i].product_name +
+        " | " +
+        res[i].department_name +
         " | " +
         "$" +
         res[i].price +
@@ -71,7 +71,7 @@ function queryAllProducts() {
           {
             type: "input",
             message: "How many units of the product would you like to buy?",
-            name: "howManyCustomerOrdered",
+            name: "quantity",
             validate: function (value) {
               if (isNaN(value) === false) {
                 return true;
@@ -90,12 +90,12 @@ function queryAllProducts() {
 
           var price = res[0].price;
 
-          if (product.howManyCustomerOrdered <= res[0].stock_quantity) {
+          if (product.quantity <= res[0].stock_quantity) {
 
             var query2 = connection.query("UPDATE products SET ? WHERE ?",
               [
                 {
-                  stock_quantity: (res[0].stock_quantity - product.howManyCustomerOrdered)
+                  stock_quantity: (res[0].stock_quantity - product.quantity)
                 },
 
                 {
